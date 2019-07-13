@@ -1,0 +1,21 @@
+body
+{
+    margin: 0;
+}
+
+#gameboard
+{
+    padding: 0;
+    margin: auto;
+    display: block;
+    border: 4px red solid;
+}
+
+#infoBar
+{
+    font-size: 10rem;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: red;
+}
