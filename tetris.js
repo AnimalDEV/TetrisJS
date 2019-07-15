@@ -13,6 +13,7 @@ class Tetris
     this.rotationIndex = 0;
     this.lastRotationIndex = 0;
     this.isMoveable = true;
+    this.canRotate = true;
 
     this.controls = {
       left: false,
@@ -186,11 +187,13 @@ class Tetris
       X = X - xCount;
       Y++;
     }
+
     // left wall
     if (mostX === 0)
     {
       console.log('Collision Left Wall');
       canMoveLeft = false;
+      this.canRotate = false;
     }
 
     return canMoveLeft;
@@ -234,15 +237,10 @@ class Tetris
     {
       console.log('Collision Right Wall');
       canMoveRight = false;
+      this.canRotate = false;
     }
 
     return canMoveRight;
-  }
-
-  // TODO proper wallkick
-  wallkick(space)
-  {
-    this.posX += space;
   }
 
   doControls()
@@ -256,6 +254,7 @@ class Tetris
         {
           this.startX--;
           this.posX--;
+          this.canRotate = true;
         }
       }
 
@@ -266,6 +265,7 @@ class Tetris
         {
           this.startX++;
           this.posX++;
+          this.canRotate = true;
         }
       }
 
@@ -273,15 +273,18 @@ class Tetris
       {
         this.controls.up = false;
 
-        if (this.rotationIndex >= 3)
+        if (this.canRotate)
         {
-          this.lastRotationIndex = 3;
-          this.rotationIndex = 0;
-        }
-        else
-        {
-          this.lastRotationIndex = this.rotationIndex;
-          this.rotationIndex++;
+          if (this.rotationIndex >= 3)
+          {
+            this.lastRotationIndex = 3;
+            this.rotationIndex = 0;
+          }
+          else
+          {
+            this.lastRotationIndex = this.rotationIndex;
+            this.rotationIndex++;
+          }
         }
       }
 
