@@ -321,8 +321,15 @@ class Tetris
   }
 }
 
-const canvas = document.getElementById('gameboard');
-const context = canvas.getContext('2d');
+const gameCanvas = document.getElementById('gameboard');
+const gameCtx = gameCanvas.getgameCtx('2d');
+
+const nextPieceCanvas = document.getElementById('nextPiece');
+const nextPieceCtx = nextPieceCanvas.getgameCtx('2d');
+
+// TODO next piece display
+nextPieceCtx.fillStyle = '#4b4b4b';
+nextPieceCtx.fillRect(0, 0, nextPieceCanvas.width, nextPieceCanvas.height);
 
 const MATRIX_O = [
   [
@@ -495,6 +502,8 @@ let lastTimestamp = 0;
 let activePiece = new Tetris();
 let isLoss = false;
 let isGamePaused = false;
+let linesCount = 0;
+let tetrisCount = 0;
 
 const board =
 [
@@ -588,83 +597,97 @@ function gameloop(timestamp)
       }
     }
 
-    activePiece.syncPieceToBoard();
     activePiece.doControls();
-
+    activePiece.syncPieceToBoard();
     drawBoard();
+    syncScore();
     window.requestAnimationFrame(gameloop);
   }
 }
+
 function drawBoard()
 {
+  const width = unit - 3;
+  const height = unit - 3;
+  const rounded = 7;
+  const halfRadians = (2 * Math.PI)/2;
+  const quarterRadians = (2 * Math.PI)/4;
+
   for (let i = 0; i < board.length; i++)
   {
     for (let j = 0; j < board[i].length; j++)
     {
+      const x = j * unit + 3;
+      const y = i * unit + 3;
       switch (board[i][j])
       {
         case 0:
         {
-          context.fillStyle = '#262722';
-          context.fillRect(j * unit, i * unit, unit, unit);
+          gameCtx.fillStyle = '#4a4c58';
           break;
         }
 
         case 1:
         {
-          context.fillStyle = '#274696';
-          context.fillRect(j * unit, i * unit, unit, unit);
+          gameCtx.fillStyle = '#F4D71E';
           break;
         }
 
         case 2:
         {
-          context.fillStyle = '#E5282E';
-          context.fillRect(j * unit, i * unit, unit, unit);
+          gameCtx.fillStyle = '#32ff7e';
           break;
         }
 
         case 3:
         {
-          context.fillStyle = '#F8D517';
-          context.fillRect(j * unit, i * unit, unit, unit);
+          gameCtx.fillStyle = '#ffaf40';
           break;
         }
 
         case 4:
         {
-          context.fillStyle = '#5CAD2C';
-          context.fillRect(j * unit, i * unit, unit, unit);
+          gameCtx.fillStyle = '#ff4d4d';
           break;
         }
 
         case 5:
         {
-          context.fillStyle = '#DF2384';
-          context.fillRect(j * unit, i * unit, unit, unit);
+          gameCtx.fillStyle = '#ffcccc';
           break;
         }
 
         case 6:
         {
-          context.fillStyle = '#EF7E18';
-          context.fillRect(j * unit, i * unit, unit, unit);
+          gameCtx.fillStyle = '#cd84f1';
           break;
         }
 
         case 7:
         {
-          context.fillStyle = '#2CB099';
-          context.fillRect(j * unit, i * unit, unit, unit);
+          gameCtx.fillStyle = '#7efff5';
           break;
         }
       }
+
+      gameCtx.beginPath();
+      gameCtx.arc(rounded + x, rounded + y, rounded, -quarterRadians, halfRadians, true);
+      gameCtx.lineTo(x, y + height - rounded);
+      gameCtx.arc(rounded + x, height - rounded + y, rounded, halfRadians, quarterRadians, true);
+      gameCtx.lineTo(x + width - rounded, y + height);
+      gameCtx.arc(x + width - rounded, y + height - rounded, rounded, quarterRadians, 0, true);
+      gameCtx.lineTo(x + width, y + rounded);
+      gameCtx.arc(x + width - rounded, y + rounded, rounded, 0, -quarterRadians, true);
+      gameCtx.lineTo(x + rounded, y);
+      gameCtx.fill();
     }
   }
 }
 
 function clearLines()
 {
+  let linesNum = 0;
+
   for (let i = 0; i < board.length; i++)
   {
     let piecesInRow = 0;
@@ -677,9 +700,16 @@ function clearLines()
     }
     if (piecesInRow === 10)
     {
+      linesNum++;
+      linesCount++;
       shiftBoard(i);
     }
     piecesInRow = 0;
+  }
+
+  if (linesNum === 4)
+  {
+    tetrisCount++;
   }
 }
 
@@ -698,4 +728,13 @@ function checkLoss()
       isLoss = true;
     }
   }
+}
+
+function syncScore()
+{
+  const lines = document.getElementById('lines');
+  const tetris = document.getElementById('tetris');
+
+  tetris.innerText = tetrisCount;
+  lines.innerText = linesCount;
 }

@@ -1,21 +1,56 @@
 body
 {
     margin: 0;
+    background :#363946;
+    text-align: center;
+}
+
+p
+{
+    color: white;
+    font-size: 2rem;
+    margin: 0;
 }
 
 #gameboard
 {
     padding: 0;
+    float: left;
     margin: auto;
     display: block;
-    border: 4px red solid;
 }
 
-#infoBar
+.game-wrap
 {
-    font-size: 10rem;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
-    color: red;
+    margin: auto;
+    width: 32.75rem;
+    height: 40.25rem;
+    margin-top: 5rem;
+}
+
+.infoWrap
+{
+    float: right;
+    width: 12.5rem; 
+    height: 40.25rem;
+}
+
+.nextPieceText
+{
+    font-size: 1.8rem;
+}
+
+.nextPieceWrap
+{
+    width: 8rem;
+    height: 10rem;
+    margin: 1rem auto;
+}
+
+.stats
+{
+    color: yellow;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-top: 50%;
 }

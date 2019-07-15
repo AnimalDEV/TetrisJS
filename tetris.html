@@ -6,8 +6,22 @@
     
 </head>
 <body>
-    <p id="infoBar"></p>
-    <canvas id="gameboard" width="320" height="640"></canvas>
+    <div class = "game-wrap">
+        <canvas id="gameboard" width="324" height="644"></canvas>
+        <div class="infoWrap">
+            <div class = "nextPieceWrap">
+                <p class="nextPieceText">Next Piece</p>
+                <canvas id="nextPiece" width="128" height="128"></canvas>
+            </div>
+            <div class="infoBar">
+                <p class="stats">Stats</p>
+                <p class="infoText">Lines:</p>
+                <p id="lines">0</p>
+                <p class="infoText">Tetris:</p>
+                <p id="tetris">0</p>
+            </div>
+        </div>
+    </div>
     <script src="tetris.js"></script>
 </body>
 </html>
