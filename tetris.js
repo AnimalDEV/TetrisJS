@@ -322,10 +322,10 @@ class Tetris
 }
 
 const gameCanvas = document.getElementById('gameboard');
-const gameCtx = gameCanvas.getgameCtx('2d');
+const gameCtx = gameCanvas.getContext('2d');
 
 const nextPieceCanvas = document.getElementById('nextPiece');
-const nextPieceCtx = nextPieceCanvas.getgameCtx('2d');
+const nextPieceCtx = nextPieceCanvas.getContext('2d');
 
 // TODO next piece display
 nextPieceCtx.fillStyle = '#4b4b4b';
