@@ -327,10 +327,6 @@ const gameCtx = gameCanvas.getContext('2d');
 const nextPieceCanvas = document.getElementById('nextPiece');
 const nextPieceCtx = nextPieceCanvas.getContext('2d');
 
-// TODO next piece display
-nextPieceCtx.fillStyle = '#4b4b4b';
-nextPieceCtx.fillRect(0, 0, nextPieceCanvas.width, nextPieceCanvas.height);
-
 const MATRIX_O = [
   [
     [0, 1, 1, 0],
@@ -500,6 +496,7 @@ const unit = 32;
 const gravitySpeed = 1;
 let lastTimestamp = 0;
 let activePiece = new Tetris();
+let nextPiece = new Tetris();
 let isLoss = false;
 let isGamePaused = false;
 let linesCount = 0;
@@ -529,6 +526,7 @@ const board =
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
+drawNextPiece();
 window.requestAnimationFrame(gameloop);
 
 // controls
@@ -593,7 +591,9 @@ function gameloop(timestamp)
       checkLoss();
       if (!isLoss)
       {
-        activePiece = new Tetris();
+        activePiece = nextPiece;
+        nextPiece = new Tetris();
+        drawNextPiece();
       }
     }
 
@@ -737,4 +737,114 @@ function syncScore()
 
   tetris.innerText = tetrisCount;
   lines.innerText = linesCount;
+}
+
+function drawNextPiece()
+{
+  const matrix = nextPiece.matrix[0];
+  const id = nextPiece.id;
+  let color;
+
+  const width = unit - 3;
+  const height = unit - 3;
+  const rounded = 7;
+  const halfRadians = (2 * Math.PI)/2;
+  const quarterRadians = (2 * Math.PI)/4;
+
+  switch (id)
+  {
+    case 0:
+    {
+      color = '#4a4c58';
+      break;
+    }
+
+    case 1:
+    {
+      color = '#F4D71E';
+      break;
+    }
+
+    case 2:
+    {
+      color = '#32ff7e';
+      break;
+    }
+
+    case 3:
+    {
+      color = '#ffaf40';
+      break;
+    }
+
+    case 4:
+    {
+      color = '#ff4d4d';
+      break;
+    }
+
+    case 5:
+    {
+      color = '#ffcccc';
+      break;
+    }
+
+    case 6:
+    {
+      color = '#cd84f1';
+      break;
+    }
+
+    case 7:
+    {
+      color = '#7efff5';
+      break;
+    }
+  }
+
+  // clear previous drawn piece
+  nextPieceCtx.fillStyle = '#4b4b4b';
+  for (let i = 0; i < 4; i++)
+  {
+    for (let j = 0; j < 4; j++)
+    {
+      const x = j * unit + 3;
+      const y = i * unit + 3;
+
+      nextPieceCtx.beginPath();
+      nextPieceCtx.arc(rounded + x, rounded + y, rounded, -quarterRadians, halfRadians, true);
+      nextPieceCtx.lineTo(x, y + height - rounded);
+      nextPieceCtx.arc(rounded + x, height - rounded + y, rounded, halfRadians, quarterRadians, true);
+      nextPieceCtx.lineTo(x + width - rounded, y + height);
+      nextPieceCtx.arc(x + width - rounded, y + height - rounded, rounded, quarterRadians, 0, true);
+      nextPieceCtx.lineTo(x + width, y + rounded);
+      nextPieceCtx.arc(x + width - rounded, y + rounded, rounded, 0, -quarterRadians, true);
+      nextPieceCtx.lineTo(x + rounded, y);
+      nextPieceCtx.fill();
+    }
+  }
+
+  nextPieceCtx.fillStyle = color;
+  for (let i = 0; i < matrix.length; i++)
+  {
+    for (let j = 0; j < matrix[i].length; j++)
+    {
+      const x = j * unit + 3;
+      const y = i * unit + 3;
+
+      if (matrix[i][j] === 1)
+      {
+        nextPieceCtx.beginPath();
+        nextPieceCtx.arc(rounded + x, rounded + y, rounded, -quarterRadians, halfRadians, true);
+        nextPieceCtx.lineTo(x, y + height - rounded);
+        nextPieceCtx.arc(rounded + x, height - rounded + y, rounded, halfRadians, quarterRadians, true);
+        nextPieceCtx.lineTo(x + width - rounded, y + height);
+        nextPieceCtx.arc(x + width - rounded, y + height - rounded, rounded, quarterRadians, 0, true);
+        nextPieceCtx.lineTo(x + width, y + rounded);
+        nextPieceCtx.arc(x + width - rounded, y + rounded, rounded, 0, -quarterRadians, true);
+        nextPieceCtx.lineTo(x + rounded, y);
+        nextPieceCtx.fill();
+      }
+    }
+  }
 }
