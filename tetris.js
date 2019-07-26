@@ -304,17 +304,16 @@ class Tetris
     if (this.controls.esc)
     {
       this.controls.esc = false;
-      const infoBar = document.getElementById('infoBar');
+      const infoBar = document.getElementById('pauseText');
 
       if (isGamePaused)
       {
-        infoBar.innerText = '';
+        infoBar.style.visibility = 'hidden';
         isGamePaused = false;
       }
       else
       {
-        infoBar.innerText = 'Game Paused';
-
+        infoBar.style.visibility = 'visible';
         isGamePaused = true;
       }
     }

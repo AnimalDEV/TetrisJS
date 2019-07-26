@@ -20,6 +20,13 @@ p
     display: block;
 }
 
+#pauseText
+{
+    color: #FF6961;
+    margin-top: 33%;
+    visibility: hidden;
+}
+
 .game-wrap
 {
     margin: auto;
@@ -49,8 +56,8 @@ p
 
 .stats
 {
-    color: yellow;
+    color: #FFF8A6;
     font-size: 2.5rem;
     text-align: center;
-    margin-top: 50%;
+    margin-top: 33%;
 }
